@@ -60,8 +60,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color(0xFF1A2151), // Dark blue
-              Color(0xFF0D1333), // Darker blue
+              Color(0xFF345467), // Dark blue
+              Color(0xFFBCBCC3), // Darker blue
             ],
           ),
         ),

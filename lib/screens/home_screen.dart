@@ -73,11 +73,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 },
               ),
 
-              // Replaced Image Placeholder with Asset Image
+              // Updated Logo Container
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Container(
-                  height: 150,
+                  height: 100, // Reduced height
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: const Color(0xFF2A355A),
@@ -93,10 +94,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     ],
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(
-                      'images/inspire.png',
-                      fit: BoxFit.cover,
+                    borderRadius: BorderRadius.circular(15),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        'images/inspire.png', // or use 'inspire logo.png' if that's your actual file
+                        fit: BoxFit.contain, // Changed from cover to contain
+                        alignment: Alignment.center,
+                      ),
                     ),
                   ),
                 ),

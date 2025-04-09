@@ -24,7 +24,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       duration: const Duration(milliseconds: 1500),
     );
 
-    // Create staggered animations for each icon
     for (int i = 0; i < 8; i++) {
       final begin = 0.1 * i;
       _iconAnimations.add(
@@ -39,7 +38,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       );
     }
 
-    // Start the animation
     _animationController.forward();
   }
 
@@ -60,15 +58,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Color(0xFF345467), // Dark blue
-              Color(0xFFBCBCC3), // Darker blue
+              Color(0xFF345467),
+              Color(0xFFBCBCC3),
             ],
           ),
         ),
         child: SafeArea(
           child: Column(
             children: [
-              // App Header
               AppHeader(
                 title: 'Dashboard',
                 onMenuPressed: () {
@@ -76,7 +73,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 },
               ),
 
-              // Inspire Image Placeholder
+              // Replaced Image Placeholder with Asset Image
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Container(
@@ -95,33 +92,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                       ),
                     ],
                   ),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Inspire',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Image Placeholder',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.7),
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.asset(
+                      'images/inspire.png',
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
 
-              // Grid of Feature Icons
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),

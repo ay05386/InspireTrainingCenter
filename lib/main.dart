@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:inspire_training_center/screens/splash_screen.dart';
 
 // Import all screens
 import 'screens/home_screen.dart';
@@ -16,9 +17,10 @@ import 'screens/video_screen.dart';
 import 'screens/handout_screen.dart';
 import 'screens/manual_screen.dart';
 import 'screens/presentation_screen.dart';
+// Add splash screen import
 
 void main() {
-  // Add this to ensure initializations are complete before app runs
+  // Ensure initializations are complete before app runs
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
@@ -62,10 +64,11 @@ class MyApp extends StatelessWidget {
           bodyMedium: TextStyle(color: Colors.white),
         ),
       ),
-      // Define routes for navigation
-      initialRoute: '/', // Explicitly set initial route
+      // Set splash screen as initial route
+      initialRoute: '/splash',
       routes: {
-        '/': (context) => const HomeScreen(),
+        '/splash': (context) => const SplashScreen(),
+        '/': (context) => const HomeScreen(), // Now home is secondary route
         '/profile': (context) => const ProfileScreen(),
         '/about': (context) => const AboutUsScreen(),
         '/financial': (context) => const FinancialDetailsScreen(),

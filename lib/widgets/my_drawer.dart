@@ -126,7 +126,7 @@ class MyDrawer extends StatelessWidget {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const FinancialServicesScreen()),
+                      builder: (context) => const FinancialDetailsScreen()),
                 );
               },
             ),

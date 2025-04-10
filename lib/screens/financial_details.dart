@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
+import '../widgets/my_drawer.dart';
+import '../widgets/app_header.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -31,6 +33,7 @@ class _FinancialDetailsScreenState
   int _selectedTab = 0;
   int _selectedCourseIndex = 0;
   bool _isExpanded = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   static const List<String> monthAbbreviations = [
     'Jan',
@@ -229,158 +232,157 @@ class _FinancialDetailsScreenState
         statusBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
-        backgroundColor: const Color(0xFF151C2B),
+        key: _scaffoldKey,
+        backgroundColor: const Color(0xFF345467),
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          title: const Text(
-            'Financial Details',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 20,
-              letterSpacing: 0.5,
+        drawer: const MyDrawer(),
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF345467),
+                Color(0xFFBCBCC3),
+              ],
             ),
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.notifications_outlined),
-              onPressed: () {},
-            ),
-            const SizedBox(width: 8),
-          ],
-        ),
-        body: Column(
-          children: [
-            Container(
-              height: screenHeight * 0.22,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    const Color(0xFF3A6AF5),
-                    const Color(0xFF295BE0),
-                    const Color(0xFF1E44C2).withOpacity(0.9),
-                  ],
+          child: SafeArea(
+            child: Column(
+              children: [
+                // Using the AppHeader from the HomeScreen
+                AppHeader(
+                  title: 'Financial Details',
+                  onMenuPressed: () {
+                    _scaffoldKey.currentState?.openDrawer();
+                  },
                 ),
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
-                ),
-              ),
-              padding: const EdgeInsets.fromLTRB(20, 90, 20, 16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Total Balance',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'KWD ${_calculateTotalBalance().toStringAsFixed(1)}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                        ),
+                Container(
+                  height: screenHeight * 0.22,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        const Color(0xFF2A355A),
+                        const Color(0xFF2A355A).withOpacity(0.8),
+                        const Color(0xFF2A355A).withOpacity(0.7),
+                      ],
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
                       ),
                     ],
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.1),
+                      width: 1,
+                    ),
                   ),
-                  const Spacer(),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.calendar_today_rounded,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Total Balance',
+                            style: TextStyle(
                               color: Colors.white70,
-                              size: 14,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
                             ),
-                            const SizedBox(width: 6),
-                            Text(
-                              _formatDateMMMYYYY(DateTime.now()),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                              ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'KWD ${_calculateTotalBalance().toStringAsFixed(1)}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.calendar_today_rounded,
+                                  color: Colors.white70,
+                                  size: 14,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  _formatDateMMMYYYY(DateTime.now()),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(20, 24, 20, 16),
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.1),
+                      width: 1,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      _buildTabButton('Courses', 0),
+                      _buildTabButton('Payments', 1),
+                      _buildTabButton('Upcoming', 2),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: _selectedTab == 0
+                      ? _buildCoursesTab()
+                      : (_selectedTab == 1
+                          ? _buildPaymentsTab()
+                          : _buildUpcomingTab()),
+                ),
+              ],
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(20, 24, 20, 16),
-              height: 56,
-              decoration: BoxDecoration(
-                color: const Color(0xFF1D2636),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Row(
-                children: [
-                  _buildTabButton('Courses', 0),
-                  _buildTabButton('Payments', 1),
-                  _buildTabButton('Upcoming', 2),
-                ],
-              ),
-            ),
-            Expanded(
-              child: _selectedTab == 0
-                  ? _buildCoursesTab()
-                  : (_selectedTab == 1
-                      ? _buildPaymentsTab()
-                      : _buildUpcomingTab()),
-            ),
-          ],
-        ),
-        bottomNavigationBar: Container(
-          height: 80,
-          decoration: BoxDecoration(
-            color: const Color(0xFF1D2636),
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 20,
-                offset: const Offset(0, -5),
-              ),
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavBarItem(Icons.home_rounded, 'Home', false),
-              _buildNavBarItem(
-                  Icons.account_balance_wallet_rounded, 'Finance', true),
-              _buildNavBarItem(Icons.school_rounded, 'Courses', false),
-              _buildNavBarItem(Icons.person_rounded, 'Profile', false),
-            ],
           ),
         ),
       ),
@@ -401,7 +403,7 @@ class _FinancialDetailsScreenState
           alignment: Alignment.center,
           margin: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF3A6AF5) : Colors.transparent,
+            color: isSelected ? const Color(0xFF2A355A) : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
@@ -414,28 +416,6 @@ class _FinancialDetailsScreenState
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildNavBarItem(IconData icon, String label, bool isActive) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          icon,
-          color: isActive ? const Color(0xFF3A6AF5) : Colors.white60,
-          size: 24,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(
-            color: isActive ? const Color(0xFF3A6AF5) : Colors.white60,
-            fontSize: 12,
-            fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-          ),
-        ),
-      ],
     );
   }
 
@@ -494,23 +474,27 @@ class _FinancialDetailsScreenState
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
-                                const Color(0xFF3A6AF5),
-                                const Color(0xFF295BE0),
+                                const Color(0xFF2A355A),
+                                const Color(0xFF2A355A).withOpacity(0.8),
                               ],
                             )
                           : LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
-                                const Color(0xFF2A3546),
-                                const Color(0xFF212936),
+                                Colors.white.withOpacity(0.05),
+                                Colors.white.withOpacity(0.05),
                               ],
                             ),
                       borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Colors.white.withOpacity(0.1),
+                        width: 1,
+                      ),
                       boxShadow: isSelected
                           ? [
                               BoxShadow(
-                                color: const Color(0xFF3A6AF5).withOpacity(0.3),
+                                color: Colors.black.withOpacity(0.2),
                                 blurRadius: 15,
                                 offset: const Offset(0, 8),
                               )
@@ -590,8 +574,19 @@ class _FinancialDetailsScreenState
           const SizedBox(height: 16),
           Container(
             decoration: BoxDecoration(
-              color: const Color(0xFF1D2636),
+              color: Colors.white.withOpacity(0.05),
               borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.1),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -711,8 +706,19 @@ class _FinancialDetailsScreenState
           const SizedBox(height: 20),
           Container(
             decoration: BoxDecoration(
-              color: const Color(0xFF1D2636),
+              color: Colors.white.withOpacity(0.05),
               borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.1),
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -738,7 +744,7 @@ class _FinancialDetailsScreenState
                       child: Text(
                         _isExpanded ? 'Show Less' : 'Show All',
                         style: const TextStyle(
-                          color: Color(0xFF3A6AF5),
+                          color: Color(0xFF2A355A),
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
@@ -931,6 +937,10 @@ class _FinancialDetailsScreenState
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.06),
                   borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.1),
+                    width: 1,
+                  ),
                 ),
                 child: Row(
                   children: const [
@@ -953,19 +963,103 @@ class _FinancialDetailsScreenState
             ],
           ),
           const SizedBox(height: 16),
-          ..._buildAllPayments(),
+          // Get all paid installments from all courses
+          ..._getAllPaidInstallments().map((installment) {
+            return Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.1),
+                  width: 1,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF4CD080).withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.check_rounded,
+                      color: Color(0xFF4CD080),
+                      size: 18,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Payment for ${installment['courseName']}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Ref: ${installment['reference']} via ${installment['method']}',
+                          style: const TextStyle(
+                            color: Colors.white60,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        'KWD ${installment['amount'].toStringAsFixed(1)}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        _formatDateDDMMMYYYY(installment['date']),
+                        style: const TextStyle(
+                          color: Colors.white60,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
         ],
       ),
     );
   }
 
-  List<Widget> _buildAllPayments() {
-    List<Map<String, dynamic>> allPayments = [];
+  List<Map<String, dynamic>> _getAllPaidInstallments() {
+    final List<Map<String, dynamic>> paidInstallments = [];
 
-    for (var course in _courses) {
-      for (var installment in course['installments']) {
+    for (final course in _courses) {
+      for (final installment in course['installments']) {
         if (installment['status'] == 'Paid') {
-          allPayments.add({
+          paidInstallments.add({
             ...installment,
             'courseName': course['name'],
             'courseId': course['id'],
@@ -974,66 +1068,10 @@ class _FinancialDetailsScreenState
       }
     }
 
-    allPayments.sort((a, b) => b['date'].compareTo(a['date']));
+    // Sort by date, most recent first
+    paidInstallments.sort((a, b) => b['date'].compareTo(a['date']));
 
-    return allPayments.map((payment) {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: const Color(0xFF1D2636),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: const Color(0xFF4CD080).withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.check_circle_outline_rounded,
-                color: Color(0xFF4CD080),
-                size: 20,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    payment['courseName'],
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _formatDateDDMMMYYYY(payment['date']),
-                    style: const TextStyle(
-                      color: Colors.white60,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Text(
-              'KWD ${payment['amount'].toStringAsFixed(1)}',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      );
-    }).toList();
+    return paidInstallments;
   }
 
   Widget _buildUpcomingTab() {
@@ -1054,107 +1092,236 @@ class _FinancialDetailsScreenState
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Pay All',
-                  style: TextStyle(
-                    color: Color(0xFF3A6AF5),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
+              Text(
+                '${_getUpcomingInstallments().length} Due',
+                style: const TextStyle(
+                  color: Colors.white60,
+                  fontSize: 14,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 16),
-          ..._buildUpcomingPayments(),
-        ],
-      ),
-    );
-  }
+          ..._getUpcomingInstallments().map((installment) {
+            final daysLeft = _calculateDaysLeft(installment['date']);
 
-  List<Widget> _buildUpcomingPayments() {
-    List<Map<String, dynamic>> upcomingPayments = [];
-
-    for (var course in _courses) {
-      for (var installment in course['installments']) {
-        if (installment['status'] == 'Upcoming') {
-          upcomingPayments.add({
-            ...installment,
-            'courseName': course['name'],
-          });
-        }
-      }
-    }
-
-    upcomingPayments.sort((a, b) => a['date'].compareTo(b['date']));
-
-    return upcomingPayments.map((payment) {
-      return Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: const Color(0xFF1D2636),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
+            return Container(
+              margin: const EdgeInsets.only(bottom: 16),
               decoration: BoxDecoration(
-                color: const Color(0xFFFFA74F).withOpacity(0.1),
-                shape: BoxShape.circle,
+                color: Colors.white.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: daysLeft <= 7
+                      ? const Color(0xFFFFA74F).withOpacity(0.3)
+                      : Colors.white.withOpacity(0.1),
+                  width: 1,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
-              child: const Icon(
-                Icons.access_time_rounded,
-                color: Color(0xFFFFA74F),
-                size: 20,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              installment['courseName'],
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Course ID: ${installment['courseId']}',
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.6),
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: daysLeft <= 7
+                              ? const Color(0xFFFFA74F).withOpacity(0.1)
+                              : const Color(0xFF4CD080).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          daysLeft == 0
+                              ? 'Due Today'
+                              : daysLeft == 1
+                                  ? 'Due Tomorrow'
+                                  : 'Due in $daysLeft days',
+                          style: TextStyle(
+                            color: daysLeft <= 7
+                                ? const Color(0xFFFFA74F)
+                                : const Color(0xFF4CD080),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Payment Amount',
+                              style: TextStyle(
+                                color: Colors.white60,
+                                fontSize: 13,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'KWD ${installment['amount'].toStringAsFixed(1)}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          height: 40,
+                          width: 1,
+                          color: Colors.white.withOpacity(0.1),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Due Date',
+                              style: TextStyle(
+                                color: Colors.white60,
+                                fontSize: 13,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              _formatDateDDMMMMYYYY(installment['date']),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Show payment options or navigate to payment screen
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF2A355A),
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      minimumSize: const Size(double.infinity, 54),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: const Text(
+                      'Make Payment',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          if (_getUpcomingInstallments().isEmpty)
+            Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.symmetric(vertical: 40),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.white.withOpacity(0.3),
+                    size: 60,
+                  ),
+                  const SizedBox(height: 16),
                   Text(
-                    payment['courseName'],
-                    style: const TextStyle(
-                      color: Colors.white,
+                    'No upcoming payments',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.7),
                       fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 8),
                   Text(
-                    'Due in ${_calculateDaysLeft(payment['date'])} days',
-                    style: const TextStyle(
-                      color: Colors.white60,
-                      fontSize: 12,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _formatDateDDMMMYYYY(payment['date']),
-                    style: const TextStyle(
-                      color: Colors.white60,
-                      fontSize: 12,
+                    'You\'re all caught up with your payments',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.5),
+                      fontSize: 14,
                     ),
                   ),
                 ],
               ),
             ),
-            Text(
-              'KWD ${payment['amount'].toStringAsFixed(1)}',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      );
-    }).toList();
+        ],
+      ),
+    );
+  }
+
+  List<Map<String, dynamic>> _getUpcomingInstallments() {
+    final List<Map<String, dynamic>> upcomingInstallments = [];
+
+    for (final course in _courses) {
+      for (final installment in course['installments']) {
+        if (installment['status'] == 'Upcoming') {
+          upcomingInstallments.add({
+            ...installment,
+            'courseName': course['name'],
+            'courseId': course['id'],
+          });
+        }
+      }
+    }
+
+    // Sort by date, earliest first
+    upcomingInstallments.sort((a, b) => a['date'].compareTo(b['date']));
+
+    return upcomingInstallments;
   }
 }

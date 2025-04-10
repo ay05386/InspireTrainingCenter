@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 
+// Import your screen files
+import '../screens/home_screen.dart';
+import '../screens/profilescreen.dart';
+import '../screens/aboutus_screen.dart';
+import '../screens/financial_details.dart';
+import '../screens/news_screen.dart';
+import '../screens/contactus_screen.dart';
+
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
 
@@ -76,6 +84,11 @@ class MyDrawer extends StatelessWidget {
               index: 0,
               onTap: () {
                 Navigator.pop(context);
+                // Using pushReplacement to replace current screen with HomeScreen
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                );
               },
             ),
             _buildAnimatedListTile(
@@ -84,6 +97,11 @@ class MyDrawer extends StatelessWidget {
               index: 1,
               onTap: () {
                 Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileScreen()),
+                );
               },
             ),
             _buildAnimatedListTile(
@@ -92,6 +110,11 @@ class MyDrawer extends StatelessWidget {
               index: 2,
               onTap: () {
                 Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AboutUsScreen()),
+                );
               },
             ),
             _buildAnimatedListTile(
@@ -100,6 +123,11 @@ class MyDrawer extends StatelessWidget {
               index: 3,
               onTap: () {
                 Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const FinancialServicesScreen()),
+                );
               },
             ),
             _buildAnimatedListTile(
@@ -108,6 +136,11 @@ class MyDrawer extends StatelessWidget {
               index: 4,
               onTap: () {
                 Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const NewsEventsScreen()),
+                );
               },
             ),
             _buildAnimatedListTile(
@@ -116,6 +149,11 @@ class MyDrawer extends StatelessWidget {
               index: 5,
               onTap: () {
                 Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ContactUsScreen()),
+                );
               },
             ),
             Divider(color: Colors.white.withOpacity(0.2)),
@@ -125,6 +163,51 @@ class MyDrawer extends StatelessWidget {
               index: 6,
               onTap: () {
                 Navigator.pop(context);
+                // Show dialog to confirm logout
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      backgroundColor: const Color(0xFF1A2151),
+                      title: const Text(
+                        'Log Out',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      content: const Text(
+                        'Are you sure you want to log out?',
+                        style: TextStyle(color: Colors.white70),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context); // Close dialog
+                          },
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(color: Colors.white70),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context); // Close dialog
+                            // Add actual logout logic here
+                            // For example, clear user session and navigate to login screen
+                            // For demonstration, we'll just go back to home
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()),
+                            );
+                          },
+                          child: const Text(
+                            'Log Out',
+                            style: TextStyle(color: Colors.redAccent),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
           ],

@@ -222,14 +222,17 @@ class MyDrawer extends StatelessWidget {
     required int index,
     required VoidCallback onTap,
   }) {
+    // Using a safer approach for animation values
     return TweenAnimationBuilder<double>(
       tween: Tween<double>(begin: 0.0, end: 1.0),
       duration: Duration(milliseconds: 400 + (index * 100)),
       builder: (context, value, child) {
+        // Ensure value is within bounds
+        final safeValue = value.clamp(0.0, 1.0);
         return Transform.translate(
-          offset: Offset(20 * (1 - value), 0),
+          offset: Offset(20 * (1 - safeValue), 0),
           child: Opacity(
-            opacity: value,
+            opacity: safeValue,
             child: child,
           ),
         );

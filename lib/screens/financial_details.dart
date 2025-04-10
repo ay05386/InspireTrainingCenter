@@ -74,10 +74,12 @@ class _FinancialServicesScreenState
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.2),
       end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: const Interval(0.2, 1.0, curve: Curves.easeOutCubic),
-    ));
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0.2, 1.0, curve: Curves.easeOutCubic),
+      ),
+    );
 
     _animationController.forward();
   }
@@ -112,37 +114,29 @@ class _FinancialServicesScreenState
                 onMenuPressed: () {
                   Navigator.pop(context);
                 },
-                //  showBackButton: true,
               ),
               Expanded(
                 child: FadeTransition(
                   opacity: _fadeAnimation,
                   child: SlideTransition(
                     position: _slideAnimation,
-                    child: Padding(
+                    child: SingleChildScrollView(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Summary Card
                           _buildSummaryCard(selectedInstallment),
-
-                          const SizedBox(height: 24),
-
+                          const SizedBox(height: 20),
                           // Course Selection
                           Text(
                             'Your Courses',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleLarge
-                                ?.copyWith(
-                                  fontSize: 18,
-                                  letterSpacing: 0.5,
-                                ),
+                                ?.copyWith(fontSize: 18, letterSpacing: 0.5),
                           ),
-
-                          const SizedBox(height: 16),
-
+                          const SizedBox(height: 12),
                           // Course Scrolling List
                           SizedBox(
                             height: 110,
@@ -163,57 +157,19 @@ class _FinancialServicesScreenState
                               },
                             ),
                           ),
-
-                          const SizedBox(height: 24),
-
+                          const SizedBox(height: 20),
                           // Payment History
                           Text(
                             'Payment History',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleLarge
-                                ?.copyWith(
-                                  fontSize: 18,
-                                  letterSpacing: 0.5,
-                                ),
+                                ?.copyWith(fontSize: 18, letterSpacing: 0.5),
                           ),
-
-                          const SizedBox(height: 16),
-
-                          // Payment History List
-                          Expanded(
-                            child: _buildPaymentHistory(
-                                selectedInstallment['paymentHistory']),
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          // Pay Now Button
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                _showPaymentDialog();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1A2151),
-                                foregroundColor: Colors.white,
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                elevation: 4,
-                              ),
-                              child: const Text(
-                                'Pay Now',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
+                          const SizedBox(height: 12),
+                          // Payment History List (using shrinkWrap to prevent overflow)
+                          _buildPaymentHistory(
+                              selectedInstallment['paymentHistory']),
                         ],
                       ),
                     ),
@@ -253,15 +209,19 @@ class _FinancialServicesScreenState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Top Row with course name and ID
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                installment['courseName'],
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Text(
+                  installment['courseName'],
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Container(
@@ -281,7 +241,8 @@ class _FinancialServicesScreenState
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
+          // Amount information row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -304,7 +265,8 @@ class _FinancialServicesScreenState
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
+          // Payment progress section
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -354,7 +316,7 @@ class _FinancialServicesScreenState
                     ),
                   ),
                   Text(
-                    'Next payment: ${installment['nextPayment']}',
+                    'Next: ${installment['nextPayment']}',
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 12,
@@ -487,10 +449,12 @@ class _FinancialServicesScreenState
 
   Widget _buildPaymentHistory(List<dynamic> history) {
     return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: history.length,
+      padding: const EdgeInsets.only(bottom: 8),
       itemBuilder: (context, index) {
         final payment = history[index];
-
         return Container(
           margin: const EdgeInsets.only(bottom: 12),
           padding: const EdgeInsets.all(16),
@@ -550,94 +514,6 @@ class _FinancialServicesScreenState
           ),
         );
       },
-    );
-  }
-
-  void _showPaymentDialog() {
-    final installment = _installments[_selectedInstallmentIndex];
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF2A355A),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        title: const Text(
-          'Make a Payment',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Course: ${installment['courseName']}',
-              style: const TextStyle(
-                color: Colors.white70,
-                fontSize: 14,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Remaining: KWD ${installment['remaining'].toStringAsFixed(1)}',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Amount to Pay',
-                labelStyle: TextStyle(color: Colors.blue.shade200),
-                prefixText: 'KWD ',
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: Colors.blue.shade200),
-                ),
-              ),
-              style: const TextStyle(color: Colors.white),
-              keyboardType: TextInputType.number,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text(
-              'Cancel',
-              style: TextStyle(color: Colors.grey.shade400),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Payment processed successfully!'),
-                  backgroundColor: Colors.green,
-                ),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue.shade600,
-              foregroundColor: Colors.white,
-            ),
-            child: const Text('Pay Now'),
-          ),
-        ],
-      ),
     );
   }
 }

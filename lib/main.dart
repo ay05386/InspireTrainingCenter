@@ -8,6 +8,9 @@ import 'screens/aboutus_screen.dart';
 import 'screens/financial_details.dart';
 import 'screens/news_screen.dart';
 import 'screens/contactus_screen.dart';
+import 'screens/mockexams_screen.dart';
+import 'screens/quiz_screen.dart';
+import 'screens/community_screen.dart';
 import 'screens/practices_screen.dart';
 import 'screens/video_screen.dart';
 import 'screens/handout_screen.dart';
@@ -15,6 +18,9 @@ import 'screens/manual_screen.dart';
 import 'screens/presentation_screen.dart';
 
 void main() {
+  // Add this to ensure initializations are complete before app runs
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(
     const ProviderScope(
       child: MyApp(),
@@ -65,13 +71,15 @@ class MyApp extends StatelessWidget {
         '/financial': (context) => const FinancialServicesScreen(),
         '/news': (context) => const NewsEventsScreen(),
         '/contact': (context) => const ContactUsScreen(),
+        '/community': (context) => const CommunityScreen(),
+        '/mockexams': (context) => const MockExamsScreen(),
+        '/quizzes': (context) => const QuizzesScreen(),
         '/practices': (context) => const PracticesScreen(),
         '/video': (context) => const VideoScreen(),
         '/handout': (context) => const HandoutScreen(),
         '/manual': (context) => const ManualScreen(),
         '/presentation': (context) => const PresentationScreen(),
       },
-      // Removed the home property
     );
   }
 }

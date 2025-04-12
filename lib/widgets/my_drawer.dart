@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-
-// Import your screen files
-import '../screens/home_screen.dart';
-import '../screens/profilescreen.dart';
-import '../screens/aboutus_screen.dart';
-import '../screens/financial_details.dart';
-import '../screens/news_screen.dart';
-import '../screens/contactus_screen.dart';
+import 'package:inspire_training_center/screens/aboutus_screen.dart';
+import 'package:inspire_training_center/screens/contactus_screen.dart';
+import 'package:inspire_training_center/screens/financial_details.dart';
+import 'package:inspire_training_center/screens/home_screen.dart';
+import 'package:inspire_training_center/screens/news_screen.dart';
+import 'package:inspire_training_center/screens/profilescreen.dart';
+import 'package:inspire_training_center/screens/splash_screen.dart';
 
 class MyDrawer extends StatelessWidget {
-  const MyDrawer({Key? key}) : super(key: key);
+  const MyDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,240 +16,111 @@ class MyDrawer extends StatelessWidget {
       child: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF1A2151), // Dark blue
-              Color(0xFF0D1333), // Darker blue
-            ],
+            colors: [Color(0xFF1A2151), Color(0xFF0D1333)],
           ),
         ),
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    const Color(0xFF2A355A),
-                    const Color(0xFF1A2151).withOpacity(0.8),
-                  ],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white.withOpacity(0.1),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.3),
-                        width: 2,
-                      ),
-                    ),
-                    child: const Icon(
-                      Icons.person,
-                      size: 40,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Inspire Training',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            _buildAnimatedListTile(
-              icon: Icons.home,
-              title: 'Home',
-              index: 0,
-              onTap: () {
-                Navigator.pop(context);
-                // Using pushReplacement to replace current screen with HomeScreen
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-              },
-            ),
-            _buildAnimatedListTile(
-              icon: Icons.person,
-              title: 'My Profile',
-              index: 1,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ProfileScreen()),
-                );
-              },
-            ),
-            _buildAnimatedListTile(
-              icon: Icons.info,
-              title: 'About Us',
-              index: 2,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AboutUsScreen()),
-                );
-              },
-            ),
-            _buildAnimatedListTile(
-              icon: Icons.attach_money,
-              title: 'Financial Services',
-              index: 3,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const FinancialDetailsScreen()),
-                );
-              },
-            ),
-            _buildAnimatedListTile(
-              icon: Icons.event,
-              title: 'News and Events',
-              index: 4,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const NewsEventsScreen()),
-                );
-              },
-            ),
-            _buildAnimatedListTile(
-              icon: Icons.contact_mail,
-              title: 'Contact Us',
-              index: 5,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ContactUsScreen()),
-                );
-              },
-            ),
-            Divider(color: Colors.white.withOpacity(0.2)),
-            _buildAnimatedListTile(
-              icon: Icons.logout,
-              title: 'Log Out',
-              index: 6,
-              onTap: () {
-                Navigator.pop(context);
-                // Show dialog to confirm logout
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      backgroundColor: const Color(0xFF1A2151),
-                      title: const Text(
-                        'Log Out',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      content: const Text(
-                        'Are you sure you want to log out?',
-                        style: TextStyle(color: Colors.white70),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context); // Close dialog
-                          },
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(color: Colors.white70),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context); // Close dialog
-                            // Add actual logout logic here
-                            // For example, clear user session and navigate to login screen
-                            // For demonstration, we'll just go back to home
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomeScreen()),
-                            );
-                          },
-                          child: const Text(
-                            'Log Out',
-                            style: TextStyle(color: Colors.redAccent),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
+            _buildHeader(),
+            _buildTile(Icons.home, 'Home',
+                () => _navigateTo(context, const HomeScreen())),
+            _buildTile(Icons.person, 'Profile',
+                () => _navigateTo(context, const ProfileScreen())),
+            _buildTile(Icons.info, 'About Us',
+                () => _navigateTo(context, const AboutUsScreen())),
+            _buildTile(Icons.attach_money, 'Financial',
+                () => _navigateTo(context, const FinancialDetailsScreen())),
+            _buildTile(Icons.event, 'News',
+                () => _navigateTo(context, const NewsEventsScreen())),
+            _buildTile(Icons.contact_mail, 'Contact Us',
+                () => _navigateTo(context, const ContactUsScreen())),
+            const Divider(color: Colors.white54, height: 20),
+            _buildTile(
+                Icons.logout, 'Log Out', () => _showLogoutDialog(context)),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildAnimatedListTile({
-    required IconData icon,
-    required String title,
-    required int index,
-    required VoidCallback onTap,
-  }) {
-    // Using a safer approach for animation values
-    return TweenAnimationBuilder<double>(
-      tween: Tween<double>(begin: 0.0, end: 1.0),
-      duration: Duration(milliseconds: 400 + (index * 100)),
-      builder: (context, value, child) {
-        // Ensure value is within bounds
-        final safeValue = value.clamp(0.0, 1.0);
-        return Transform.translate(
-          offset: Offset(20 * (1 - safeValue), 0),
-          child: Opacity(
-            opacity: safeValue,
-            child: child,
-          ),
-        );
-      },
-      child: ListTile(
-        leading: Icon(icon, color: Colors.white),
-        title: Text(
-          title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
-          ),
+  Widget _buildHeader() {
+    return DrawerHeader(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            const Color(0xFF2A355A),
+            const Color(0xFF1A2151).withOpacity(0.8)
+          ],
         ),
-        onTap: onTap,
-        hoverColor: Colors.white.withOpacity(0.1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white.withOpacity(0.1),
+            ),
+            child: const Icon(Icons.person, size: 40, color: Colors.white),
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            'Inspire Training',
+            style: TextStyle(
+                color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTile(IconData icon, String title, VoidCallback onTap) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.white),
+      title: Text(title, style: const TextStyle(color: Colors.white)),
+      onTap: onTap,
+    );
+  }
+
+  void _navigateTo(BuildContext context, Widget screen) {
+    Navigator.pop(context);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => screen),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1A2151),
+        title: const Text('Log Out', style: TextStyle(color: Colors.white)),
+        content: const Text(
+          'Are you sure you want to log out?',
+          style: TextStyle(color: Colors.white70),
         ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child:
+                const Text('Cancel', style: TextStyle(color: Colors.white70)),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const SplashScreen()),
+                (route) => false,
+              );
+            },
+            child: const Text('Log Out', style: TextStyle(color: Colors.red)),
+          ),
+        ],
       ),
     );
   }

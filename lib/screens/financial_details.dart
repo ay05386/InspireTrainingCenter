@@ -250,7 +250,6 @@ class _FinancialDetailsScreenState
           child: SafeArea(
             child: Column(
               children: [
-                // Using the AppHeader from the HomeScreen
                 AppHeader(
                   title: 'Financial Details',
                   onMenuPressed: () {
@@ -963,7 +962,6 @@ class _FinancialDetailsScreenState
             ],
           ),
           const SizedBox(height: 16),
-          // Get all paid installments from all courses
           ..._getAllPaidInstallments().map((installment) {
             return Container(
               margin: const EdgeInsets.only(bottom: 16),
@@ -1068,7 +1066,6 @@ class _FinancialDetailsScreenState
       }
     }
 
-    // Sort by date, most recent first
     paidInstallments.sort((a, b) => b['date'].compareTo(a['date']));
 
     return paidInstallments;
@@ -1241,28 +1238,6 @@ class _FinancialDetailsScreenState
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Show payment options or navigate to payment screen
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF2A355A),
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      minimumSize: const Size(double.infinity, 54),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                    ),
-                    child: const Text(
-                      'Make Payment',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
                 ],
               ),
             );
@@ -1319,7 +1294,6 @@ class _FinancialDetailsScreenState
       }
     }
 
-    // Sort by date, earliest first
     upcomingInstallments.sort((a, b) => a['date'].compareTo(b['date']));
 
     return upcomingInstallments;

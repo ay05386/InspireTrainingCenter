@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -8,19 +10,86 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with WidgetsBindingObserver {
   bool _isNavigating = false;
+  bool _imageLoaded = false;
+  Timer? _navigationTimer;
+  final String _imagePath = 'images/inspire.png';
+
+  // Use memory image instead of asset image
+  Uint8List? _imageBytes;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
+    // Load image directly from asset bundle
+    _loadImageBytes();
+
+    // Set up navigation with fallbacks
     _setupNavigation();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Force reload image when dependencies change
+    if (!_imageLoaded) {
+      _loadImageBytes();
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Handle app lifecycle changes
+    if (state == AppLifecycleState.resumed) {
+      // Force reload image when app is resumed
+      _loadImageBytes();
+    }
+  }
+
+  Future<void> _loadImageBytes() async {
+    try {
+      // Clear any existing image cache
+      PaintingBinding.instance.imageCache.clear();
+      PaintingBinding.instance.imageCache.clearLiveImages();
+
+      // Load image bytes directly from asset bundle
+      final ByteData data = await rootBundle.load(_imagePath);
+      if (mounted) {
+        setState(() {
+          _imageBytes = data.buffer.asUint8List();
+          _imageLoaded = true;
+        });
+      }
+    } catch (e) {
+      debugPrint('Failed to load image bytes: $e');
+      // Still mark as loaded to avoid infinite retries
+      if (mounted) {
+        setState(() {
+          _imageLoaded = true;
+        });
+      }
+    }
+  }
+
   void _setupNavigation() {
-    // Simple delayed navigation
-    Future.delayed(const Duration(milliseconds: 2000), () {
+    // Cancel any existing timer
+    _navigationTimer?.cancel();
+
+    // Set up new timer
+    _navigationTimer = Timer(const Duration(milliseconds: 2000), () {
       _navigateToHome();
+    });
+
+    // Fallback timer in case the first one fails
+    Future.delayed(const Duration(milliseconds: 3000), () {
+      if (mounted && !_isNavigating) {
+        debugPrint('Using fallback navigation');
+        _navigateToHome();
+      }
     });
   }
 
@@ -31,9 +100,18 @@ class _SplashScreenState extends State<SplashScreen> {
       _isNavigating = true;
     });
 
-    Navigator.of(context).pushReplacement(
+    // Use pushAndRemoveUntil to clear navigation history
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => const HomeScreen()),
+      (route) => false,
     );
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _navigationTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -75,19 +153,18 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: Center(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(75),
-                      child: Image.asset(
-                        'images/inspire.png',
-                        width: 120,
-                        height: 120,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.school,
-                            size: 80,
-                            color: Colors.white,
-                          );
-                        },
-                      ),
+                      child: _imageBytes != null
+                          ? Image.memory(
+                              _imageBytes!,
+                              width: 120,
+                              height: 120,
+                              fit: BoxFit.contain,
+                            )
+                          : const Icon(
+                              Icons.school,
+                              size: 80,
+                              color: Colors.white,
+                            ),
                     ),
                   ),
                 ),

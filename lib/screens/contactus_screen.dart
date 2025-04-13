@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../widgets/app_header.dart';
+import '../widgets/my_drawer.dart'; // Import the drawer widget
 
 class ContactUsScreen extends StatefulWidget {
   const ContactUsScreen({Key? key}) : super(key: key);
@@ -86,6 +87,7 @@ class _ContactUsScreenState extends State<ContactUsScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      drawer: const MyDrawer(), // Add the drawer here
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -103,9 +105,9 @@ class _ContactUsScreenState extends State<ContactUsScreen>
               AppHeader(
                 title: 'Contact Us',
                 onMenuPressed: () {
-                  Navigator.pop(context);
+                  // Open drawer instead of popping
+                  _scaffoldKey.currentState?.openDrawer();
                 },
-                //showBackButton: true,
               ),
               Expanded(
                 child: FadeTransition(

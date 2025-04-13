@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:inspire_training_center/screens/aboutus_screen.dart';
-import 'package:inspire_training_center/screens/contactus_screen.dart';
-import 'package:inspire_training_center/screens/financial_details.dart';
-import 'package:inspire_training_center/screens/home_screen.dart';
-import 'package:inspire_training_center/screens/news_screen.dart';
-import 'package:inspire_training_center/screens/profilescreen.dart';
-import 'package:inspire_training_center/screens/splash_screen.dart';
+import '../screens/aboutus_screen.dart';
+import '../screens/contactus_screen.dart';
+import '../screens/financial_details.dart';
+import '../screens/home_screen.dart';
+import '../screens/news_screen.dart';
+import '../screens/profilescreen.dart';
+import '../screens/splash_screen.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -86,7 +86,9 @@ class MyDrawer extends StatelessWidget {
   }
 
   void _navigateTo(BuildContext context, Widget screen) {
-    Navigator.pop(context);
+    Navigator.pop(context); // Close the drawer first
+
+    // Use pushReplacement to replace the current screen
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => screen),

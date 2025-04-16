@@ -149,8 +149,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Image.asset(
-                        'images/inspire.png', // or use 'inspire logo.png' if that's your actual file
-                        fit: BoxFit.contain, // Changed from cover to contain
+                        'images/inspire.png',
+                        fit: BoxFit.contain,
                         alignment: Alignment.center,
                       ),
                     ),
@@ -169,49 +169,49 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                     children: [
                       _buildAnimatedFeatureCard(
                         animation: _iconAnimations[0],
-                        icon: Icons.people_outline,
+                        imageName: 'community.png',
                         title: 'COMMUNITY',
                         index: 0,
                       ),
                       _buildAnimatedFeatureCard(
                         animation: _iconAnimations[1],
-                        icon: Icons.assignment_outlined,
+                        imageName: 'mockexams.png',
                         title: 'MOCK EXAMS',
                         index: 1,
                       ),
                       _buildAnimatedFeatureCard(
                         animation: _iconAnimations[2],
-                        icon: Icons.question_answer_outlined,
+                        imageName: 'quizzes.png',
                         title: 'QUIZZES',
                         index: 2,
                       ),
                       _buildAnimatedFeatureCard(
                         animation: _iconAnimations[3],
-                        icon: Icons.check_circle_outline,
+                        imageName: 'practices.png',
                         title: 'PRACTICES',
                         index: 3,
                       ),
                       _buildAnimatedFeatureCard(
                         animation: _iconAnimations[4],
-                        icon: Icons.play_circle_outline,
+                        imageName: 'video.png',
                         title: 'VIDEO',
                         index: 4,
                       ),
                       _buildAnimatedFeatureCard(
                         animation: _iconAnimations[5],
-                        icon: Icons.download_outlined,
+                        imageName: 'handout.png',
                         title: 'HANDOUT',
                         index: 5,
                       ),
                       _buildAnimatedFeatureCard(
                         animation: _iconAnimations[6],
-                        icon: Icons.book_outlined,
+                        imageName: 'manual.png',
                         title: 'MANUAL',
                         index: 6,
                       ),
                       _buildAnimatedFeatureCard(
                         animation: _iconAnimations[7],
-                        icon: Icons.insert_chart_outlined,
+                        imageName: 'presentation.png',
                         title: 'PRESENTATION',
                         index: 7,
                       ),
@@ -228,7 +228,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   Widget _buildAnimatedFeatureCard({
     required Animation<double> animation,
-    required IconData icon,
+    required String imageName,
     required String title,
     required int index,
   }) {
@@ -242,7 +242,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           child: Opacity(
             opacity: safeValue,
             child: _buildFeatureCard(
-              icon: icon,
+              imageName: imageName,
               title: title,
               index: index,
             ),
@@ -253,7 +253,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   }
 
   Widget _buildFeatureCard({
-    required IconData icon,
+    required String imageName,
     required String title,
     required int index,
   }) {
@@ -278,10 +278,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              size: 36,
-              color: Colors.white,
+            SizedBox(
+              width: 36,
+              height: 36,
+              child: Image.asset(
+                'images/$imageName',
+                fit: BoxFit.contain,
+              ),
             ),
             const SizedBox(height: 12),
             Text(

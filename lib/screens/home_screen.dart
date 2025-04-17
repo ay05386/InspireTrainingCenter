@@ -132,7 +132,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   height: 100, // Reduced height
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF2A355A),
+                    color: Color.fromARGB(255, 84, 98, 146),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                         color: Colors.white.withOpacity(0.1), width: 1),
@@ -279,8 +279,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: 36,
-              height: 36,
+              width: 110,
+              height: 110,
               child: Image.asset(
                 'images/$imageName',
                 fit: BoxFit.contain,
